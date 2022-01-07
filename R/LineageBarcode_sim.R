@@ -38,7 +38,7 @@ generate_mutation <- function(barcode, mu=0.1 , N_ms = 100 ,mutation_dist = NULL
   n_mut = sum(mutation_cites)
   if (n_mut != 0) {
     child_barcode[mutation_cites] = as.integer(sample(states, n_mut, replace = T, prob = prob_dist))
-    if ((n_mut >=2)&(p_d == 1)){
+    if ((n_mut >=2)&(runif(1, 0, 1) <= p_d)){
       child_barcode <- generate_dropout(child_barcode,mutation_cites)
     }
   }
