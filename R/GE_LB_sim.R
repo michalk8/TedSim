@@ -73,7 +73,7 @@ SampleEdgeNew <- function(edge,depth,anc_state,edges,sif_mean=NULL,S=NULL,cif = 
   if (flag ==1){
     child_barcode <- barcode
     state_dist <- Mutated_state_dist(N_ms, cm)
-    child_barcode <- generate_mutation(child_barcode,mu = mu,p_d = p_d,N_ms = N_ms, mutation_dist = state_dist, unif_on = unif_on)
+    child_barcode <- generate_mutation(child_barcode,mu = mu,p_d = p_d,N_ms = N_ms, mutation_dist = state_dist, unif_on = unif_on, lifetime = t_sample[3])
     barcodes <- rbind(barcode,child_barcode)
     result<-cbind(depth+t_sample[-1],anc_state+x_sample,barcodes)
   }else{

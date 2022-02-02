@@ -22,7 +22,7 @@ Mutated_state_dist <- function(N_ms,cm){
 #' @param mutation_dist input distribution for the mutated states
 #' @param p_d whether or not to simulate dropout effects, 0 or 1
 #' @param unif_on distribution mode of mutated states. TRUE: uniform distribution; FALSE: real fitted distribution
-generate_mutation <- function(barcode, mu=0.1 , N_ms = 100 ,mutation_dist = NULL, p_d = 0, unif_on = FALSE){
+generate_mutation <- function(barcode, mu=0.1 , N_ms = 100 ,mutation_dist = NULL, p_d = 0, unif_on = FALSE, lifetime = 1){
   if (unif_on){
     states <- as.list(seq (1,N_ms,1))
     prob_dist <- NULL
@@ -34,11 +34,12 @@ generate_mutation <- function(barcode, mu=0.1 , N_ms = 100 ,mutation_dist = NULL
   m <- length(barcode)
   child_barcode <- barcode
   mu_loc = runif(m) < mu
-  mutation_cites = (child_barcode == 0) &  mu_loc
+  mutation_cites <- (child_barcode == 0) &  mu_loc
   n_mut = sum(mutation_cites)
   if (n_mut != 0) {
     child_barcode[mutation_cites] = as.integer(sample(states, n_mut, replace = T, prob = prob_dist))
-    if ((n_mut >=2)&(runif(1, 0, 1) <= p_d)){
+    heritable_sr <- 1 - exp(-lifetime * p_d)
+    if ((n_mut >=2)&(runif(1, 0, 1) <= heritable_sr)){
       child_barcode <- generate_dropout(child_barcode,mutation_cites)
     }
   }
